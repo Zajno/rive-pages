@@ -8,7 +8,7 @@ export default function Home() {
           Rive Animation Tester
         </h1>
         <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          Тестируйте и демонстрируйте Rive анимации в браузере. Загружайте по URL или выбирайте
+         Игорь ты можешь тестить и показывать Rive анимации в браузере. Загружайте по URL или выбирайте
           готовые примеры.
         </p>
         <Link
