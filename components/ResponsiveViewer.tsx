@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect, useLayoutEffect } from "react";
+import { ResponsiveViewerContext } from "@/contexts/ResponsiveViewerContext";
 
 const PRESETS = [
   { id: "desktop", label: "Desktop", width: 1280, height: 720 },
@@ -170,19 +171,16 @@ export default function ResponsiveViewer({ children, className = "" }: Responsiv
         className="relative rounded-lg overflow-hidden bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 shrink-0"
         style={{ width: scaledWidth, height: scaledHeight }}
       >
-        <div
-          className="absolute left-0 top-0 w-full h-full [&>*]:!w-full [&>*]:!h-full [&>*]:!min-w-0 [&>*]:!min-h-0 origin-top-left"
-          style={{
-            width: size.width,
-            height: size.height,
-            ...(scale < 1 && {
-              transform: `scale(${scale})`,
-              transformOrigin: "top left",
-            }),
-          }}
+        <ResponsiveViewerContext.Provider
+          value={{ width: scaledWidth, height: scaledHeight }}
         >
-          {children}
-        </div>
+          <div
+            className="absolute left-0 top-0 w-full h-full [&>*]:!w-full [&>*]:!h-full [&>*]:!min-w-0 [&>*]:!min-h-0"
+            style={{ width: scaledWidth, height: scaledHeight }}
+          >
+            {children}
+          </div>
+        </ResponsiveViewerContext.Provider>
         {(["n", "s", "e", "w", "nw", "ne", "sw", "se"] as const).map((edge) => {
           const cursor =
             edge === "n"

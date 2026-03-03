@@ -3,6 +3,7 @@
 import { useRive, useViewModel, useViewModelInstance } from "@rive-app/react-webgl2";
 import { Layout, Fit, Alignment } from "@rive-app/webgl2";
 import { useEffect } from "react";
+import { useResponsiveViewerSize } from "@/contexts/ResponsiveViewerContext";
 
 interface RiveViewerProps {
   src: string;
@@ -41,6 +42,13 @@ export default function RiveViewer({
     riveViewModel,
     viewModel && rive ? { rive, useDefault: true } : undefined
   );
+  const containerSize = useResponsiveViewerSize();
+
+  useEffect(() => {
+    if (rive && containerSize?.width && containerSize?.height) {
+      rive.resizeToCanvas();
+    }
+  }, [rive, containerSize?.width, containerSize?.height]);
 
   useEffect(() => {
     if (viewModel && viewModelInstance && onViewModelReady) {
