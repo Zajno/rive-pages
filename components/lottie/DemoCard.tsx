@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { LottieDemo } from "@/lib/lottie-demos";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const CardPreview = dynamic(() => import("./CardPreview"), { ssr: false });
 
 interface DemoCardProps {
   demo: LottieDemo;
@@ -42,14 +45,8 @@ export default function DemoCard({ demo }: DemoCardProps) {
 
   return (
     <div className="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 overflow-hidden flex flex-col">
-      {/* Preview thumbnail area */}
-      <div className="bg-zinc-100 dark:bg-zinc-800 h-36 flex items-center justify-center">
-        <span className="text-xs text-zinc-400 dark:text-zinc-500">
-          {demo.breakpoints.length} breakpoint{demo.breakpoints.length !== 1 ? "s" : ""}
-          {" · "}
-          {demo.scroll_height.toLocaleString()}px scroll
-        </span>
-      </div>
+      {/* Preview thumbnail */}
+      <CardPreview demo={demo} />
 
       <div className="p-4 flex flex-col gap-3 flex-1">
         <div className="flex-1">
