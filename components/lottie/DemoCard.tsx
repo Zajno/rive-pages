@@ -10,12 +10,17 @@ const CardPreview = dynamic(() => import("./CardPreview"), { ssr: false });
 
 interface DemoCardProps {
   demo: LottieDemo;
+  adminMode?: boolean;
 }
 
-export default function DemoCard({ demo }: DemoCardProps) {
+export default function DemoCard({ demo, adminMode = false }: DemoCardProps) {
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const editHref = adminMode
+    ? `/lottie/${demo.id}/edit?zajno-admin`
+    : `/lottie/${demo.id}/edit`;
 
   const handleCopy = () => {
     const url = `${window.location.origin}/demo/${demo.slug}`;
@@ -44,7 +49,14 @@ export default function DemoCard({ demo }: DemoCardProps) {
   return (
     <div className="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 overflow-hidden flex flex-col">
       {/* Preview thumbnail */}
-      <CardPreview demo={demo} />
+      <div className="relative">
+        <CardPreview demo={demo} />
+        {demo.is_private && (
+          <span className="absolute top-2 left-2 text-[10px] font-medium bg-zinc-900/70 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">
+            Private
+          </span>
+        )}
+      </div>
 
       <div className="p-4 flex flex-col gap-3 flex-1">
         <div className="flex-1">
@@ -65,10 +77,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
 
         {/* Actions */}
         <div className="flex gap-2">
-          <Link
-            href={`/lottie/${demo.id}/edit`}
-            className="btn-secondary text-xs flex-1 text-center"
-          >
+          <Link href={editHref} className="btn-secondary text-xs flex-1 text-center">
             Edit
           </Link>
           <a

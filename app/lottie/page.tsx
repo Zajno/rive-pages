@@ -44,7 +44,10 @@ export default async function LottieListPage({ searchParams }: PageProps) {
               </p>
             )}
           </div>
-          <Link href="/lottie/new" className="btn-primary">
+          <Link
+            href={showPrivate ? "/lottie/new?zajno-admin" : "/lottie/new"}
+            className="btn-primary"
+          >
             + New demo
           </Link>
         </div>
@@ -67,7 +70,10 @@ export default async function LottieListPage({ searchParams }: PageProps) {
             <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-1">
               Create your first Lottie scroll demo
             </p>
-            <Link href="/lottie/new" className="btn-primary mt-6 inline-flex">
+            <Link
+              href={showPrivate ? "/lottie/new?zajno-admin" : "/lottie/new"}
+              className="btn-primary mt-6 inline-flex"
+            >
               + New demo
             </Link>
           </div>
@@ -76,7 +82,7 @@ export default async function LottieListPage({ searchParams }: PageProps) {
         {!fetchError && demos.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {demos.map((demo) => (
-              <DemoCard key={demo.id} demo={demo} />
+              <DemoCard key={demo.id} demo={demo} adminMode={showPrivate} />
             ))}
           </div>
         )}

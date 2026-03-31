@@ -83,6 +83,7 @@ export default function LottieEditor({ initial }: LottieEditorProps) {
   const [detectedDuration, setDetectedDuration] = useState<number | null>(null);
   const [autoScrollFromDuration, setAutoScrollFromDuration] = useState(true);
   const [devMode, setDevMode] = useState(searchParams.get("dev") === "1");
+  const isAdmin = searchParams.has("zajno-admin");
 
   const updateBreakpoint = useCallback((id: string, updates: Partial<BreakpointConfig>) => {
     setBreakpoints((prev) => prev.map((bp) => (bp.id === id ? { ...bp, ...updates } : bp)));
@@ -231,14 +232,16 @@ export default function LottieEditor({ initial }: LottieEditorProps) {
           />
         </div>
 
-        <label className="inline-flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-          <input
-            type="checkbox"
-            checked={isPrivate}
-            onChange={(e) => setIsPrivate(e.target.checked)}
-          />
-          Private (hide from list, show only with ?zajno-admin)
-        </label>
+        {isAdmin && (
+          <label className="inline-flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+            <input
+              type="checkbox"
+              checked={isPrivate}
+              onChange={(e) => setIsPrivate(e.target.checked)}
+            />
+            Private (hide from public list)
+          </label>
+        )}
 
         {/* Main action: Upload Lottie */}
         <div className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 p-4">
